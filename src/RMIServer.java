@@ -54,7 +54,7 @@ public class RMIServer {
 						client.getInputStream());
 				try {
 					RMIMessage message = (RMIMessage) in.readObject();
-				
+					Object remote = message.getRor();
 					Object local = remoteToLocal.get(remote);
 					try {
 
