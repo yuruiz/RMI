@@ -1,3 +1,9 @@
+package test;
+
+import RMIClient.LocateRegistry;
+import RMIClient.RMIRegistry;
+import RMIClient.RemoteObjectRef;
+
 import java.io.*;
 
 // we test simple registry by binding a service to ROR.
@@ -30,7 +36,7 @@ public class testRebind
 	System.out.println("Interface name is "+ror.Remote_Interface_Name);
 
 	// locate.
-	SimpleRegistry sr = LocateSimpleRegistry.getRegistry(host, port);
+	RMIRegistry sr = LocateRegistry.getRegistry(host, port);
 
 	System.out.println("located."+sr+"/n");
 	
