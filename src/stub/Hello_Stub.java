@@ -1,7 +1,8 @@
 package stub;
 
 import RMIClient.RemoteObjectRef;
-import test.HelloInterface;
+import test.Hello;
+import utility.RMIMessage;
 import utility.StubInterface;
 
 import java.io.IOException;
@@ -9,9 +10,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import utility.*;
 
-public final class Hello_Stub implements HelloInterface, StubInterface {
+public final class Hello_Stub implements Hello, StubInterface {
 
     private RemoteObjectRef roRef = null;
     private Socket socket;
@@ -35,8 +35,9 @@ public final class Hello_Stub implements HelloInterface, StubInterface {
             throw new RuntimeException("Remote ref not attached");
         }
 
-        RMIMessage mesg = new RMIMessage();
-        mesg.attachRef(roRef);
+        RMIMessage mesg = new RMIMessage("Hello", null);
+
+        mesg.setKey(roRef.getKey());
 
         connectServer();
 

@@ -1,7 +1,9 @@
 package RMIClient;
-import utility.*;
+import utility.StubInterface;
 
-public class RemoteObjectRef {
+import java.io.Serializable;
+
+public class RemoteObjectRef implements Serializable{
     String IP_adr;
     int Port;
     int Obj_Key;
