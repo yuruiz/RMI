@@ -1,15 +1,15 @@
-
 package stub;
 
 import RMIClient.RemoteObjectRef;
 import test.HelloInterface;
-import utility.*;
+import utility.StubInterface;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import utility.*;
 
 public final class Hello_Stub implements HelloInterface, StubInterface {
 
@@ -18,7 +18,6 @@ public final class Hello_Stub implements HelloInterface, StubInterface {
     private RMIMessage reply;
     private ObjectInputStream input;
     private ObjectOutputStream output;
-
 
     public Hello_Stub() {
     }
@@ -74,9 +73,10 @@ public final class Hello_Stub implements HelloInterface, StubInterface {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
 
     }
+
 }
