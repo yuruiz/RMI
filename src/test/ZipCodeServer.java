@@ -1,3 +1,4 @@
+package test;
 public interface ZipCodeServer // extends YourRemote or whatever
 {
     public void initialise(ZipCodeList newlist);

@@ -1,4 +1,5 @@
 package test;
+import RMIClient.*;
 public interface NameServer // extends YourRemote
 {
     public RemoteObjectRef match(String name);

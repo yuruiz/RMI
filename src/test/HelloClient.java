@@ -1,3 +1,4 @@
+package test;
 import java.rmi.*;
 
 class HelloClient
@@ -13,7 +14,7 @@ class HelloClient
     try 
     {
       System.setSecurityManager (new RMISecurityManager());
-      HelloInterface hello = (HelloInterface) Naming.lookup(HelloServerURL);
+      Hello hello = (Hello) Naming.lookup(HelloServerURL);
 
       String theGreeting = hello.sayHello (args[0]);
 

@@ -1,6 +1,9 @@
 package RMIClient;
+import utility.StubInterface;
 
-public class RemoteObjectRef {
+import java.io.Serializable;
+
+public class RemoteObjectRef implements Serializable{
     String IP_adr;
     int Port;
     int Obj_Key;
@@ -15,7 +18,7 @@ public class RemoteObjectRef {
 
     // this method is important, since it is a stub creator.
     // 
-    Object localise() {
+    public Object localise() {
         String stubName = "stub." + Remote_Interface_Name + "_stub";
         Object stub = null;
         try {
