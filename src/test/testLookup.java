@@ -1,3 +1,9 @@
+package test;
+
+import RMIClient.LocateRegistry;
+import RMIClient.RMIRegistry;
+import RMIClient.RemoteObjectRef;
+
 import java.io.*;
 
 // we test simple registry by looking up a service.
@@ -19,7 +25,7 @@ public class testLookup
 	System.out.println("We lookup "+ServiceName);
 
 	// locate.
-	SimpleRegistry sr = LocateSimpleRegistry.getRegistry(host, port);
+	RMIRegistry sr = LocateRegistry.getRegistry(host, port);
 
 	System.out.println("located."+sr+"/n");
 	

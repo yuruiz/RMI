@@ -1,4 +1,6 @@
-import java.util.*;
+package RMIServer;
+
+import RMIClient.RemoteObjectRef;
 
 // This is simple. ROR needs a new object key for each remote object (or its skeleton). 
 // This can be done easily, for example by using a counter.
