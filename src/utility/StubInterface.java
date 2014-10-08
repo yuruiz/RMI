@@ -7,7 +7,7 @@ import RMIClient.RemoteObjectRef;
  */
 public interface StubInterface {
 
-    public void attachRef(RemoteObjectRef ref);
+	public void attachRef(RemoteObjectRef ref);
 
-    public RemoteObjectRef getRef();
+	public RemoteObjectRef getRef();
 }

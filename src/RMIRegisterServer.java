@@ -1,6 +1,10 @@
 import java.io.IOException;
+import java.io.PrintStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -12,7 +16,9 @@ import java.util.Scanner;
 public class RMIRegisterServer implements Runnable {
 
 	private static final int PORT = 15440;
+	private static final int EXECUTER_PORT = 15640;
 	protected boolean shutDown = false;
+	private RMIServer master;
 
 	@Override
 	public void run() {
@@ -22,23 +28,39 @@ public class RMIRegisterServer implements Runnable {
 			while (!shutDown) {
 				Socket client = server.accept();
 				Scanner reader = new Scanner(client.getInputStream());
-				String response;
+				List<String> response = new ArrayList<String>();
 
 				String line = reader.nextLine();
 				if (line == null) {
 					continue;
 				}
 				if (line.startsWith("who")) {
-					response = "regsitry";
+					response.add("regsitry");
 				} else {
 					if (line.startsWith("lookup")) {
-						response = "look";
+						String name = reader.nextLine();
+
+						response.add(InetAddress.getLocalHost().getHostName());
+						response.add(String.valueOf(EXECUTER_PORT));
+						response.add(String.valueOf(master.addNew(name)));
+						response.add(master.getRemoteInterfaceName(name));
+
 					}
+
 				}
 
+				reader.close();
+
+				PrintStream out = new PrintStream(client.getOutputStream());
+				for (String s : response) {
+					out.println(s);
+				}
+				client.close();
+
 			}
+			server.close();
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

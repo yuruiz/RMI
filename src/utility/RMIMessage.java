@@ -1,4 +1,7 @@
+package utility;
+
 import java.io.Serializable;
+import RMIClient.RemoteObjectRef;
 
 /**
  * Created by yuruiz on 10/7/14.
