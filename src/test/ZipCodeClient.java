@@ -9,6 +9,8 @@
 //   ...
 //   ...
 //   end
+
+package test;
 import RMIClient.LocateRegistry;
 import RMIClient.RMIRegistry;
 import RMIClient.RemoteObjectRef;

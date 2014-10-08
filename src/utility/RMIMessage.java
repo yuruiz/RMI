@@ -14,9 +14,14 @@ public class RMIMessage implements Serializable {
     private String methodName;
     private boolean isexcepThrown = false;
     private Exception excep;
+    private Object retValue;
 
     public RMIMessage() {
 
+    }
+
+    public void attachRef(RemoteObjectRef ref) {
+        this.ror = ref;
     }
 
     public RemoteObjectRef getRor() {
@@ -49,5 +54,13 @@ public class RMIMessage implements Serializable {
 
     public void setMethodName(String methodName) {
         this.methodName = methodName;
+    }
+
+    public void setRet(Object retValue) {
+        this.retValue = retValue;
+    }
+
+    public Object getRet() {
+        return this.retValue;
     }
 }

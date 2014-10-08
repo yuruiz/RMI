@@ -1,4 +1,5 @@
 package test;
+import RMIClient.*;
 
 public class NameServerImpl implements NameServer {
     String serviceName;

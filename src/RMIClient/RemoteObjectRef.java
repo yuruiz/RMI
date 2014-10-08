@@ -1,4 +1,5 @@
 package RMIClient;
+import utility.*;
 
 public class RemoteObjectRef {
     String IP_adr;
@@ -15,7 +16,7 @@ public class RemoteObjectRef {
 
     // this method is important, since it is a stub creator.
     // 
-    Object localise() {
+    public Object localise() {
         String stubName = "stub." + Remote_Interface_Name + "_stub";
         Object stub = null;
         try {
