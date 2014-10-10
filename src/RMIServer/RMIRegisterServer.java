@@ -10,17 +10,18 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * The class that takes care of client registering
+ * The registry server implementation that takes care of client registering
  * 
  * @author Siyu
  *
  */
 public class RMIRegisterServer implements Runnable {
 
-	private static final int PORT = 15440;
-	private static final int EXECUTER_PORT = 15640;
+	private static final int PORT = 15440; // The port registry is running on
+	private static final int EXECUTER_PORT = 15640; // The port the server is on
 	protected boolean shutDown = false;
-	private RMIServer master;
+	private RMIServer master; // registry has a reference to master to get the
+								// mapping information
 
 	public RMIRegisterServer(RMIServer master) {
 		this.master = master;
@@ -29,19 +30,23 @@ public class RMIRegisterServer implements Runnable {
 	@Override
 	public void run() {
 		try {
-
 			ServerSocket server = new ServerSocket(PORT);
 			while (!shutDown) {
+				/*
+				 * Polling for client connection and manage the handshake
+				 */
 				Socket client = server.accept();
 				Scanner reader = new Scanner(client.getInputStream());
 				PrintStream out = new PrintStream(client.getOutputStream());
 				List<String> response = new ArrayList<String>();
 
 				String line = reader.nextLine();
-				System.out.println(line);
 				if (line == null) {
 					continue;
 				}
+				/*
+				 * Handshake, telling a client this is the registry server
+				 */
 				if (line.startsWith("who")) {
 					response.add("Registry");
 				} else {
@@ -50,10 +55,11 @@ public class RMIRegisterServer implements Runnable {
 						System.out.println("Object name: " + name);
 
 						response.add("found");
-						response.add(InetAddress.getLocalHost().getHostAddress());
+						response.add(InetAddress.getLocalHost()
+								.getHostAddress());
 						response.add(String.valueOf(EXECUTER_PORT));
 						response.add(String.valueOf(master.addNew(name)));
-						response.add(master.getRemoteInterfaceName(name));
+						response.add(master.getInterfaceName(name));
 
 					}
 
