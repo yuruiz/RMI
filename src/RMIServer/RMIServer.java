@@ -39,7 +39,7 @@ public class RMIServer {
 
 	public static void main(String[] args) {
 		RMIServer server = new RMIServer();
-		server.addInterface("HelloServer", "Hello");
+		server.addInterface("HelloImpl", "Hello");
 		server.start();
 
 	}

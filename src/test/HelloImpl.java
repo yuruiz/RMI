@@ -3,10 +3,10 @@ package test;
 import java.rmi.*;
 import java.rmi.server.*;
 
-public class HelloServer extends UnicastRemoteObject implements Hello {
+public class HelloImpl extends UnicastRemoteObject implements Hello {
 	private static final String serverName = "hello";
 
-	public HelloServer() throws RemoteException {
+	public HelloImpl() throws RemoteException {
 	}
 
 	

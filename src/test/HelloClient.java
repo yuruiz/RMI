@@ -13,7 +13,7 @@ class HelloClient {
         try {
             RMIRegistry registry = LocateRegistry.getRegistry("127.0.0.1", 15440);
 
-            RemoteObjectRef ref = registry.lookup("HelloServer");
+            RemoteObjectRef ref = registry.lookup("HelloImpl");
 
             Hello task = (Hello) ref.localise();
 
