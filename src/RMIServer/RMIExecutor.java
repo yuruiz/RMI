@@ -18,12 +18,13 @@ public class RMIExecutor implements Runnable {
 	private Object callOn;
 	private String methodName;
 	private Object[] args;
+	private Object[] argType;
 	private Object returnValue;
 	private Socket client;
 	private ObjectOutputStream out;
 
 	public RMIExecutor(Object o, String methodName, Object[] args,
-			Socket client, ObjectOutputStream out) {
+			Object[] argType, Socket client, ObjectOutputStream out) {
 
 		this.callOn = o;
 		this.methodName = methodName;
@@ -39,7 +40,7 @@ public class RMIExecutor implements Runnable {
 		Method m;
 		RMIMessage message = null;
 		try {
-			m = callOn.getClass().getMethod(methodName);
+			m = callOn.getClass().getMethod(methodName, (Class[]) argType);
 			returnValue = m.invoke(callOn, args);
 			message = new RMIMessage(returnValue);
 		} catch (NoSuchMethodException | SecurityException

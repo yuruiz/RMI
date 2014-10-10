@@ -75,8 +75,8 @@ public class RMIServer {
 					RMIMessage message = (RMIMessage) in.readObject();
 					Object onCall = remoteToLocal.get(message.getKey());
 					RMIExecutor executor = new RMIExecutor(onCall,
-							message.getMethodName(), message.getArgv(), client,
-							out);
+							message.getMethodName(), message.getArgv(),
+							message.getArgType(), client, out);
 					new Thread(executor).start();
 
 				} catch (ClassNotFoundException e) {

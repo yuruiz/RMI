@@ -26,11 +26,6 @@ public class HelloServer extends UnicastRemoteObject implements Hello {
 		}
 	}
 
-	// This is the one real method
-	public String sayHello() throws RemoteException {
-		return "Hello World! Hello FuckS";
-	}
-
 	@Override
 	public String sayHello(String name) throws RemoteException {
 		// TODO Auto-generated method stub
