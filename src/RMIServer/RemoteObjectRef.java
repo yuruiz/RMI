@@ -1,3 +1,4 @@
+package RMIServer;
 
 public class RemoteObjectRef {
 	String IP_adr;

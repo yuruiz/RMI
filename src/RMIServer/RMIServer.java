@@ -1,3 +1,4 @@
+package RMIServer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -54,34 +55,18 @@ public class RMIServer {
 						client.getInputStream());
 				try {
 					RMIMessage message = (RMIMessage) in.readObject();
-					Object remote = message.getRor();
-					Object local = remoteToLocal.get(remote);
-					try {
+					Object onCall = remoteToLocal.get(message.getKey());
+					RMIExecutor executor = new RMIExecutor(onCall,
+							message.getMethodName(), message.getArgv(), client);
+					new Thread(executor).start();
 
-						Method method = local.getClass().getMethod(
-								message.getMethodName());
-						try {
-							method.invoke(local);
-						} catch (IllegalAccessException e) {
-							e.printStackTrace();
-						} catch (IllegalArgumentException e) {
-							e.printStackTrace();
-						} catch (InvocationTargetException e) {
-							e.printStackTrace();
-						}
-
-					} catch (NoSuchMethodException e) {
-						System.err.println("No such method");
-						e.printStackTrace();
-					} catch (SecurityException e) {
-						e.printStackTrace();
-					}
 				} catch (ClassNotFoundException e) {
 					System.err.println("Unrecognized message type");
 					e.printStackTrace();
 				}
 
 			}
+			server.close();
 		} catch (IOException e) {
 			System.err.println("Server starts fail");
 			e.printStackTrace();

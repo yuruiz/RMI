@@ -17,6 +17,14 @@ public class RMIMessage implements Serializable {
 	private Object[] argType;
 	private int Obj_Key = 0;
 
+	public RMIMessage(Exception exception) {
+		this.excep = exception;
+	}
+
+	public RMIMessage(Object returnValue) {
+		this.retValue = returnValue;
+	}
+
 	public RMIMessage(String method, Object[] args) {
 		this.methodName = method;
 		this.argv = args;

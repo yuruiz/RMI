@@ -1,3 +1,4 @@
+package test;
 
 public class ZipCodeRListImpl implements ZipCodeRList {
 	String city;
