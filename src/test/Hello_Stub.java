@@ -2,6 +2,7 @@ package test;
 
 import RMIClient.RemoteObjectRef;
 import utility.RMIMessage;
+import utility.Remote440Exception;
 import utility.StubInterface;
 
 import java.io.IOException;
@@ -39,7 +40,7 @@ public final class Hello_Stub implements Hello, StubInterface {
 		this.roRef = ref;
 	}
 
-	public String sayHello(String s) throws RemoteException {
+	public String sayHello(String s) throws Remote440Exception {
 		if (roRef == null) {
 			throw new RuntimeException("Remote ref not attached");
 		}
@@ -55,7 +56,7 @@ public final class Hello_Stub implements Hello, StubInterface {
 		sendMesg(mesg);
 
 		if (reply.getExcep() != null) {
-			throw new RemoteException("Method Invocation Error"
+			throw new Remote440Exception("Method Invocation Error"
 					+ reply.getExcep());
 		}
 

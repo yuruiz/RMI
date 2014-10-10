@@ -1,34 +1,40 @@
 package test;
+
 import RMIClient.*;
 
 public class NameServerImpl implements NameServer {
-    String serviceName;
-    RemoteObjectRef ro;
-    NameServer next;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5123915282356024930L;
+	String serviceName;
+	RemoteObjectRef ro;
+	NameServer next;
 
-    public NameServerImpl() {
-        serviceName = "";
-        ro = null;
-        next = null;
-    }
+	public NameServerImpl() {
+		serviceName = "";
+		ro = null;
+		next = null;
+	}
 
-    public NameServerImpl(String s, RemoteObjectRef r, NameServer n) {
-        serviceName = s;
-        ro = r;
-        next = n;
-    }
+	public NameServerImpl(String s, RemoteObjectRef r, NameServer n) {
+		serviceName = s;
+		ro = r;
+		next = n;
+	}
 
-    public NameServer add(String s, RemoteObjectRef r, NameServer n) {
-        return new NameServerImpl(s, r, this);
-    }
+	public NameServer add(String s, RemoteObjectRef r, NameServer n) {
+		return new NameServerImpl(s, r, this);
+	}
 
-    public RemoteObjectRef match(String name) {
-        if (name.equals(serviceName)) return ro;
-        else return null;
-    }
+	public RemoteObjectRef match(String name) {
+		if (name.equals(serviceName))
+			return ro;
+		else
+			return null;
+	}
 
-    public NameServer next() {
-        return next;
-    }
+	public NameServer next() {
+		return next;
+	}
 }
-

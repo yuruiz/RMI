@@ -1,4 +1,4 @@
-package RMIClient;
+package utility;
 
 /**
  * Implementation of our own remote exception
