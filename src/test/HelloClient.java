@@ -10,8 +10,11 @@ class HelloClient {
 
     // This takes one command line argument: A person's first name
     public static void main(String[] args) {
+        String host = args[0];
+        int port = Integer.parseInt(args[1]);
+
         try {
-            RMIRegistry registry = LocateRegistry.getRegistry("127.0.0.1", 15440);
+            RMIRegistry registry = LocateRegistry.getRegistry(host, port);
 
             RemoteObjectRef ref = registry.lookup("HelloImpl");
 

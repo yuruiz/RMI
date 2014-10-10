@@ -10,7 +10,11 @@
 //   ...
 //   end.
 package test;
-import RMIClient.*;
+
+import RMIClient.LocateRegistry;
+import RMIClient.RMIRegistry;
+import RMIClient.RemoteObjectRef;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

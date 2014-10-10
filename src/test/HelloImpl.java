@@ -9,8 +9,6 @@ public class HelloImpl extends UnicastRemoteObject implements Hello {
 	public HelloImpl() throws RemoteException {
 	}
 
-	
-
 	@Override
 	public String sayHello(String name) throws RemoteException {
 		return "Hello World! Hello Fuck" + name;
