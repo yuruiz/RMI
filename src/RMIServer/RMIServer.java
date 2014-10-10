@@ -2,6 +2,7 @@ package RMIServer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
@@ -28,19 +29,24 @@ public class RMIServer {
 
 	}
 
+	public void addInterface(String remote, String local) {
+		interfaceMap.put(remote, local);
+	}
+
 	public String getRemoteInterfaceName(String name) {
 		return interfaceMap.get(name);
 	}
 
 	public static void main(String[] args) {
 		RMIServer server = new RMIServer();
+		server.addInterface("HelloServer", "Hello");
 		server.start();
+
 	}
 
 	public int addNew(String name) {
-		String localName = interfaceMap.get(name);
 		try {
-			Class<?> c = Class.forName(localName);
+			Class<?> c = Class.forName("test." + name);
 			Object o = c.newInstance();
 			remoteToLocal.put(nextId, o);
 			nextId++;
@@ -60,13 +66,17 @@ public class RMIServer {
 			new Thread(registry).start();
 			while (!shutDown) {
 				Socket client = server.accept();
+				System.out.println("Accepted");
+				ObjectOutputStream out = new ObjectOutputStream(
+						client.getOutputStream());
 				ObjectInputStream in = new ObjectInputStream(
 						client.getInputStream());
 				try {
 					RMIMessage message = (RMIMessage) in.readObject();
 					Object onCall = remoteToLocal.get(message.getKey());
 					RMIExecutor executor = new RMIExecutor(onCall,
-							message.getMethodName(), message.getArgv(), client);
+							message.getMethodName(), message.getArgv(), client,
+							out);
 					new Thread(executor).start();
 
 				} catch (ClassNotFoundException e) {

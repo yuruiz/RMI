@@ -34,19 +34,23 @@ public class RMIRegisterServer implements Runnable {
 			while (!shutDown) {
 				Socket client = server.accept();
 				Scanner reader = new Scanner(client.getInputStream());
+				PrintStream out = new PrintStream(client.getOutputStream());
 				List<String> response = new ArrayList<String>();
 
 				String line = reader.nextLine();
+				System.out.println(line);
 				if (line == null) {
 					continue;
 				}
 				if (line.startsWith("who")) {
-					response.add("regsitry");
+					response.add("Registry");
 				} else {
 					if (line.startsWith("lookup")) {
 						String name = reader.nextLine();
+						System.out.println("Object name: " + name);
 
-						response.add(InetAddress.getLocalHost().getHostName());
+						response.add("found");
+						response.add(InetAddress.getLocalHost().getHostAddress());
 						response.add(String.valueOf(EXECUTER_PORT));
 						response.add(String.valueOf(master.addNew(name)));
 						response.add(master.getRemoteInterfaceName(name));
@@ -55,13 +59,11 @@ public class RMIRegisterServer implements Runnable {
 
 				}
 
-				reader.close();
-
-				PrintStream out = new PrintStream(client.getOutputStream());
 				for (String s : response) {
 					out.println(s);
 				}
 				client.close();
+				reader.close();
 
 			}
 			server.close();

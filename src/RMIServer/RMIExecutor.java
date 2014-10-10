@@ -1,4 +1,5 @@
 package RMIServer;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -19,13 +20,16 @@ public class RMIExecutor implements Runnable {
 	private Object[] args;
 	private Object returnValue;
 	private Socket client;
+	private ObjectOutputStream out;
 
-	public RMIExecutor(Object o, String methodName, Object[] args, Socket client) {
+	public RMIExecutor(Object o, String methodName, Object[] args,
+			Socket client, ObjectOutputStream out) {
 
 		this.callOn = o;
 		this.methodName = methodName;
 		this.args = args;
 		this.client = client;
+		this.out = out;
 
 	}
 
@@ -40,15 +44,14 @@ public class RMIExecutor implements Runnable {
 			message = new RMIMessage(returnValue);
 		} catch (NoSuchMethodException | SecurityException
 				| IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e1) {
+				| InvocationTargetException e) {
 
+			e.printStackTrace();
 			message = new RMIMessage(new Remote440Exception(
 					"Insuccessful method invocation"));
 
 		} finally {
-			ObjectOutputStream out;
 			try {
-				out = new ObjectOutputStream(client.getOutputStream());
 				out.writeObject(message);
 				client.close();
 			} catch (IOException e) {
