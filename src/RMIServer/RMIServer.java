@@ -1,4 +1,5 @@
 package RMIServer;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -18,15 +19,22 @@ public class RMIServer {
 	private static final int PORT = 15640;
 	private int nextId = 0;
 	private boolean shutDown = false;
+	private RMIRegisterServer registry;
 
-	public RMIServer(int port) {
+	public RMIServer() {
 		remoteToLocal = new ConcurrentHashMap<Integer, Object>();
 		interfaceMap = new HashMap<String, String>();
+		registry = new RMIRegisterServer(this);
 
 	}
 
 	public String getRemoteInterfaceName(String name) {
 		return interfaceMap.get(name);
+	}
+
+	public static void main(String[] args) {
+		RMIServer server = new RMIServer();
+		server.start();
 	}
 
 	public int addNew(String name) {
@@ -49,6 +57,7 @@ public class RMIServer {
 
 		try {
 			ServerSocket server = new ServerSocket(PORT);
+			new Thread(registry).start();
 			while (!shutDown) {
 				Socket client = server.accept();
 				ObjectInputStream in = new ObjectInputStream(

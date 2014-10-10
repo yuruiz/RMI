@@ -1,4 +1,5 @@
 package RMIServer;
+
 import java.io.IOException;
 import java.io.PrintStream;
 import java.net.InetAddress;
@@ -20,6 +21,10 @@ public class RMIRegisterServer implements Runnable {
 	private static final int EXECUTER_PORT = 15640;
 	protected boolean shutDown = false;
 	private RMIServer master;
+
+	public RMIRegisterServer(RMIServer master) {
+		this.master = master;
+	}
 
 	@Override
 	public void run() {
