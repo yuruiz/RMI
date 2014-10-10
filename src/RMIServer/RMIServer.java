@@ -22,9 +22,12 @@ import utility.Remote440Exception;
  */
 public class RMIServer {
 
-	private Map<Integer, Object> remoteToLocal; // mapping from id to local
-												// object
-	private Map<String, String> interfaceMap; // Object name to interface name
+	// mapping from id to local object
+	private Map<Integer, Object> remoteToLocal;
+	private Map<String, String> services;
+
+	// remote interface to local interface name mapping
+	private Map<String, String> remoteLocalInterface;
 	private static final int PORT = 15640; // server port
 	private int nextId = 0; // the current largest id that has been assigned
 	private boolean shutDown = false;// if server shall be shut down
@@ -32,8 +35,9 @@ public class RMIServer {
 
 	public RMIServer() {
 		remoteToLocal = new ConcurrentHashMap<Integer, Object>();
-		interfaceMap = new HashMap<String, String>();
+		remoteLocalInterface = new HashMap<String, String>();
 		registry = new RMIRegisterServer(this);
+		services = new ConcurrentHashMap<String, String>();
 
 	}
 
@@ -46,7 +50,7 @@ public class RMIServer {
 	 *            local interface name
 	 */
 	public void addInterface(String remote, String local) {
-		interfaceMap.put(remote, local);
+		remoteLocalInterface.put(remote, local);
 	}
 
 	/**
@@ -58,7 +62,33 @@ public class RMIServer {
 	 * @return
 	 */
 	public String getInterfaceName(String name) {
-		return interfaceMap.get(name);
+		return remoteLocalInterface.get(name);
+	}
+
+	/**
+	 * Helper method that returns the first implemented interface of a class
+	 * which is the regarded service name
+	 * 
+	 * @param className
+	 * @return
+	 * @throws ClassNotFoundException
+	 */
+	private String getServiceName(String className)
+			throws ClassNotFoundException {
+		return Class.forName(className).getInterfaces()[0].getSimpleName();
+	}
+
+	/**
+	 * Add an try to the services mapping that map from a service name to the
+	 * implementation class the provides the service
+	 * 
+	 * @param service
+	 *            service name
+	 * @param impl
+	 *            implementation class name
+	 */
+	public void addService(String service, String impl) {
+		services.put(service, impl);
 	}
 
 	/**
@@ -71,7 +101,16 @@ public class RMIServer {
 	 */
 	public int addNew(String name) {
 		try {
-			Class<?> c = Class.forName("test." + name);
+			/*
+			 * Find the local class that implements the service return -1 upon
+			 * exception or no such service
+			 */
+			String implClass = services.get(name);
+			if (implClass == null) {
+				return -1;
+			}
+
+			Class<?> c = Class.forName(implClass);
 			Object o = c.newInstance();
 			remoteToLocal.put(nextId, o);
 			nextId++;
@@ -142,8 +181,25 @@ public class RMIServer {
 	 */
 	public static void main(String[] args) {
 		RMIServer server = new RMIServer();
-		server.addInterface("HelloImpl", "Hello");
-		server.start();
 
+		/*
+		 * Add the remote interface name to local interface name mapping entry
+		 */
+		server.addInterface("Hello", "Hello");
+		server.addInterface("Substring", "Substring");
+		/*
+		 * Add the service name to implementation class name mapping entry
+		 */
+		try {
+			server.addService(server.getServiceName("test.HelloImpl"),
+					"test.HelloImpl");
+			server.addService(server.getServiceName("test.SubstringImpl"),
+					"test.SubstringImpl");
+		} catch (ClassNotFoundException e) {
+			// if no class found, just ignore it and do not add an entry
+			e.printStackTrace();
+		}
+
+		server.start();
 	}
 }

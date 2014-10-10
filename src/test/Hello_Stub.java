@@ -69,13 +69,11 @@ public final class Hello_Stub implements Hello, StubInterface {
 		}
 
 		try {
-			System.out.println("Connecting Server " + roRef.getIP()
+			System.out.println("Connecting Server " + roRef.getIP() + ":"
 					+ roRef.getPort());
 			socket = new Socket(roRef.getIP(), roRef.getPort());
-			System.out.println("connected");
 			output = new ObjectOutputStream(socket.getOutputStream());
 			input = new ObjectInputStream(socket.getInputStream());
-			System.out.println("connected2");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
