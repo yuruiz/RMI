@@ -31,6 +31,7 @@ public class RMIExecutor implements Runnable {
 		this.args = args;
 		this.client = client;
 		this.out = out;
+		this.argType = argType;
 
 	}
 

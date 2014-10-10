@@ -34,9 +34,9 @@ public final class Hello_Stub implements Hello, StubInterface {
 			throw new RuntimeException("Remote ref not attached");
 		}
 
-		RMIMessage mesg = new RMIMessage("sayHello", new Object[]{s});
+		RMIMessage mesg = new RMIMessage("sayHello", new Object[] { s });
 
-        mesg.setArgType(new Object[]{s.getClass()});
+		mesg.setArgType(new Class[] { String.class });
 
 		mesg.setKey(roRef.getKey());
 
