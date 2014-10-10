@@ -1,5 +1,11 @@
 package RMIClient;
 
+/**
+ * Implementation of our own remote exception
+ * 
+ * @author Siyu
+ *
+ */
 public class Remote440Exception extends Exception {
 
 	/**

@@ -9,23 +9,30 @@ public class RemoteObjectRef implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 2803056063725814440L;
-	String IP_adr;
-	int Port;
-	int Obj_Key;
-	String Remote_Interface_Name;
+	private String ipAdr;
+	private int port;
+	private int objKey;
+	private String remoteInterfaceName;
 
 	public RemoteObjectRef(String ip, int port, int obj_key,
 			String interfaceName) {
-		IP_adr = ip;
-		Port = port;
-		Obj_Key = obj_key;
-		Remote_Interface_Name = interfaceName;
+		this.ipAdr = ip;
+		this.port = port;
+		this.objKey = obj_key;
+		this.remoteInterfaceName = interfaceName;
 	}
 
-	// this method is important, since it is a stub creator.
-	//
+	/**
+	 * Create a new remote reference that can communicate with the server by
+	 * using the stub
+	 * 
+	 * @return
+	 */
 	public Object localise() {
-		String stubName = "test." + Remote_Interface_Name + "_Stub";
+		/*
+		 * Create a stub and attach the remote object reference to the stub
+		 */
+		String stubName = "test." + remoteInterfaceName + "_Stub";
 		Object stub = null;
 		try {
 			Class<?> stubClass;
@@ -40,18 +47,18 @@ public class RemoteObjectRef implements Serializable {
 	}
 
 	public String getIP() {
-		return this.IP_adr;
+		return this.ipAdr;
 	}
 
 	public int getPort() {
-		return this.Port;
+		return this.port;
 	}
 
 	public int getKey() {
-		return this.Obj_Key;
+		return this.objKey;
 	}
 
 	public String getInterface() {
-		return this.Remote_Interface_Name;
+		return this.remoteInterfaceName;
 	}
 }

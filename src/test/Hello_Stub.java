@@ -10,8 +10,18 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
+/**
+ * The stub implementation of the Hello service
+ * 
+ * @author Yurui Zhou
+ *
+ */
 public final class Hello_Stub implements Hello, StubInterface {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2862224793902768100L;
 	private RemoteObjectRef roRef = null;
 	private Socket socket;
 	private RMIMessage reply;

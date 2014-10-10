@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import utility.Constant;
+
 /**
  * The registry server implementation that takes care of client registering
  * 
@@ -40,6 +42,9 @@ public class RMIRegisterServer implements Runnable {
 				PrintStream out = new PrintStream(client.getOutputStream());
 				List<String> response = new ArrayList<String>();
 
+				/*
+				 * Reading handshake/lookup information from client
+				 */
 				String line = reader.nextLine();
 				if (line == null) {
 					continue;
@@ -47,24 +52,49 @@ public class RMIRegisterServer implements Runnable {
 				/*
 				 * Handshake, telling a client this is the registry server
 				 */
-				if (line.startsWith("who")) {
-					response.add("Registry");
+				if (line.equals(Constant.HAND_SHAKE_QUERY)) {
+					response.add(Constant.HAND_SHAKE_RESPONSE);
 				} else {
+					/*
+					 * Client tries to lookup a service
+					 */
 					if (line.startsWith("lookup")) {
-						String name = reader.nextLine();
-						System.out.println("Object name: " + name);
+						if (reader.hasNextLine()) {
 
-						response.add("found");
-						response.add(InetAddress.getLocalHost()
-								.getHostAddress());
-						response.add(String.valueOf(EXECUTER_PORT));
-						response.add(String.valueOf(master.addNew(name)));
-						response.add(master.getInterfaceName(name));
+							String name = reader.nextLine();
+							int id = master.addNew(name);
+							if (id != -1) {
+								/*
+								 * Look up successful, return the IP address,
+								 * port, assigned id, remote interface name to
+								 * client
+								 */
+								response.add("found");
+								response.add(InetAddress.getLocalHost()
+										.getHostAddress());
+								response.add(String.valueOf(EXECUTER_PORT));
+								response.add(String.valueOf(id));
+								response.add(master.getInterfaceName(name));
+							}
+							/*
+							 * Upon unsuccessful looking up, return a failing
+							 * message
+							 */
+							else {
+								response.add(Constant.LOOK_UP_FAIL_RESPONSE);
+							}
+						} else {
+							response.add(Constant.LOOK_UP_FAIL_RESPONSE);
+						}
 
+					} else {
+						response.add(Constant.UNRECOGINIZED);
 					}
 
 				}
-
+				/*
+				 * Sending back response to client
+				 */
 				for (String s : response) {
 					out.println(s);
 				}

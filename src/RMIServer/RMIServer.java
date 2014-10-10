@@ -61,7 +61,8 @@ public class RMIServer {
 	}
 
 	/**
-	 * add a new running object according to client request
+	 * Add a new running object according to client request and return the
+	 * assigned id, return -1 upon unsuccessful adding
 	 * 
 	 * @param name
 	 *            class name requested by client
@@ -76,10 +77,11 @@ public class RMIServer {
 			return nextId - 1;
 		} catch (ClassNotFoundException | InstantiationException
 				| IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			/*
+			 * return -1 upon exception
+			 */
+			return -1;
 		}
-		return -1;
 	}
 
 	/**
