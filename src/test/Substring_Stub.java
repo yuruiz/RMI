@@ -12,82 +12,87 @@ import java.net.Socket;
 
 public class Substring_Stub implements Substring, StubInterface {
 
-    /**
+	/**
      *
      */
-    private static final long serialVersionUID = -5535303883176087061L;
-    private RemoteObjectRef roRef = null;
-    private Socket socket;
-    private RMIMessage reply;
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
+	private static final long serialVersionUID = -5535303883176087061L;
+	private RemoteObjectRef roRef = null;
+	private Socket socket;
+	private RMIMessage reply;
+	private ObjectInputStream input;
+	private ObjectOutputStream output;
 
-    public Substring_Stub() {
+	public Substring_Stub() {
 
-    }
+	}
 
-    @Override
-    public String SubString(String s, int start, int end) throws Remote440Exception {
-        if (roRef == null) {
-            throw new RuntimeException("Remote ref not attached");
-        }
+	@Override
+	public String SubString(String s, Integer start, Integer end)
+			throws Remote440Exception {
+		if (roRef == null) {
+			throw new RuntimeException("Remote ref not attached");
+		}
 
-        RMIMessage mesg = new RMIMessage("SubString", new Object[]{s, start, end});
+		RMIMessage mesg = new RMIMessage("SubString", new Object[] { s, start,
+				end });
 
-        mesg.setArgType(new Class[]{String.class, Integer.class, Integer.class});
+		mesg.setArgType(new Class[] { String.class, Integer.class,
+				Integer.class });
 
-        mesg.setKey(roRef.getKey());
+		mesg.setKey(roRef.getKey());
 
-        connectServer();
+		connectServer();
 
-        sendMesg(mesg);
+		sendMesg(mesg);
 
-        if (reply.getExcep() != null) {
-            throw new Remote440Exception("Method Invocation Error" + reply.getExcep());
-        }
+		if (reply.getExcep() != null) {
+			throw new Remote440Exception("Method Invocation Error"
+					+ reply.getExcep());
+		}
 
-        return (String) reply.getRet();
-    }
+		return (String) reply.getRet();
+	}
 
-    @Override
-    public void attachRef(RemoteObjectRef ref) {
-        this.roRef = ref;
+	@Override
+	public void attachRef(RemoteObjectRef ref) {
+		this.roRef = ref;
 
-    }
+	}
 
-    @Override
-    public RemoteObjectRef getRef() {
-        return this.roRef;
-    }
+	@Override
+	public RemoteObjectRef getRef() {
+		return this.roRef;
+	}
 
-    private void connectServer() {
-        if (roRef == null) {
-            throw new RuntimeException("Remote ref not attached");
-        }
+	private void connectServer() {
+		if (roRef == null) {
+			throw new RuntimeException("Remote ref not attached");
+		}
 
-        try {
-            System.out.println("Connecting Server " + roRef.getIP() + ":" + roRef.getPort());
-            socket = new Socket(roRef.getIP(), roRef.getPort());
-            output = new ObjectOutputStream(socket.getOutputStream());
-            input = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		try {
+			System.out.println("Connecting Server " + roRef.getIP() + ":"
+					+ roRef.getPort());
+			socket = new Socket(roRef.getIP(), roRef.getPort());
+			output = new ObjectOutputStream(socket.getOutputStream());
+			input = new ObjectInputStream(socket.getInputStream());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-    }
+	}
 
-    private void sendMesg(RMIMessage mesg) {
-        try {
-            output.writeObject(mesg);
+	private void sendMesg(RMIMessage mesg) {
+		try {
+			output.writeObject(mesg);
 
-            reply = (RMIMessage) input.readObject();
+			reply = (RMIMessage) input.readObject();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 
-    }
+	}
 
 }
